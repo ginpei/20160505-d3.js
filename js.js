@@ -5,27 +5,36 @@
 	var width = sizes.baseWidth;
 	var height = sizes.baseHeight;
 
+	// something
+	// to convert values to coordinates
 	var x = d3.time.scale().range([0,width]);
 	var y = d3.scale.linear().range([height,0]);
 
+	// line generator
+	// to write a line (path)
 	var line = d3.svg.line();
 	line.x(d=>x(d.date));
 	line.y(d=>y(d.value));
 
+	// --------------------------------
+	// render a chart according to the data
+
+	var data = getData();
+
+	// desice extents of both axises
+	x.domain(d3.extent(data, d=>d.date));
+	y.domain(d3.extent(data, d=>d.value));
+
+	// create a root SVG element
 	var svg = d3.select('#basic').append('svg');
 	svg.attr('width', width);
 	svg.attr('height', height);
 
-	svg = svg.append('g');
-
-	var data = getData();
-
-	x.domain(d3.extent(data, d=>d.date));
-	y.domain(d3.extent(data, d=>d.value));
-
+	// write a line
 	svg.append('path')
 		.datum(data)
-		.attr('class', 'line')
+		.style('fill', 'none')
+		.style('stroke', '#000')
 		.attr('d', line);
 })(d3);
 
