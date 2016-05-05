@@ -96,7 +96,7 @@
 	// write X axis
 	base.append('g')
 		.attr('class', 'x axis')
-		.attr('transform', `translate(0, ${height})`)
+		.attr('transform', `translate(0, ${height})`)  // move to bottom
 		.call(xAxis);
 
 	// write Y axis
