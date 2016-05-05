@@ -67,20 +67,20 @@
 	svg.attr('width', baseWidth);
 	svg.attr('height', baseHeight);
 
-	svg = svg.append('g');
-	svg.attr('transform', `translate(${margin.left}, ${margin.top})`);
+	var base = svg.append('g');
+	base.attr('transform', `translate(${margin.left}, ${margin.top})`);
 
 	var data = getData();
 
 	x.domain(d3.extent(data, d=>d.date));
 	y.domain(d3.extent(data, d=>d.value));
 
-	svg.append('g')
+	base.append('g')
 		.attr('class', 'x axis')
 		.attr('transform', `translate(0, ${height})`)
 		.call(xAxis);
 
-	svg.append('g')
+	base.append('g')
 		.attr('class', 'y axis')
 		.call(yAxis)
 		.append('text')
@@ -90,7 +90,7 @@
 			.style('text-anchor', 'end')
 			.text('Price ($)');
 
-	svg.append('path')
+	base.append('path')
 		.datum(data)
 		.attr('class', 'line')
 		.attr('d', line);
