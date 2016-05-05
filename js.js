@@ -42,58 +42,67 @@
 // Axis
 (function(d3) {
 	var sizes = getSizes();
-	var margin = sizes.margin;
-	var baseWidth = sizes.baseWidth;
+	var baseWidth = sizes.baseWidth;  // SVG area size
 	var baseHeight = sizes.baseHeight;
-	var width = baseWidth - margin.left - margin.right;
+	var margin = sizes.margin;
+	var width = baseWidth - margin.left - margin.right;  // chart size
 	var height = baseHeight - margin.top - margin.bottom;
 
+	// something
+	// to convert values to coordinates
 	var x = d3.time.scale().range([0,width]);
 	var y = d3.scale.linear().range([height,0]);
 
+	// X Axis
 	var xAxis = d3.svg.axis();
 	xAxis.scale(x);
 	xAxis.orient('bottom');
 
+	// Y Axis
 	var yAxis = d3.svg.axis();
 	yAxis.scale(y);
 	yAxis.orient('left');
 
+	// line generator
+	// to write a line (path)
 	var line = d3.svg.line();
 	line.x(d=>x(d.date));
 	line.y(d=>y(d.value));
 
+	// --------------------------------
+	// render a chart according to the data
+
+	var data = getData();
+
+	// desice extents of both axises
+	x.domain(d3.extent(data, d=>d.date));
+	y.domain(d3.extent(data, d=>d.value));
+
+	// create a root SVG element
 	var svg = d3.select('#axis').append('svg');
 	svg.attr('width', baseWidth);
 	svg.attr('height', baseHeight);
 
+	// base group
 	var base = svg.append('g');
 	base.attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-	var data = getData();
+	// write a line
+	base.append('path')
+		.datum(data)
+		.attr('class', 'line')
+		.attr('d', line);
 
-	x.domain(d3.extent(data, d=>d.date));
-	y.domain(d3.extent(data, d=>d.value));
-
+	// write X axis
 	base.append('g')
 		.attr('class', 'x axis')
 		.attr('transform', `translate(0, ${height})`)
 		.call(xAxis);
 
+	// write Y axis
 	base.append('g')
 		.attr('class', 'y axis')
-		.call(yAxis)
-		.append('text')
-			.attr('transform', 'rotate(-90)')
-			.attr('y', 6)
-			.attr('dy', '.71em')
-			.style('text-anchor', 'end')
-			.text('Price ($)');
-
-	base.append('path')
-		.datum(data)
-		.attr('class', 'line')
-		.attr('d', line);
+		.call(yAxis);
 })(d3);
 
 function getSizes() {
