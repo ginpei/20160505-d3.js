@@ -14,3 +14,19 @@ svg {
   stroke: steelblue;
   stroke-width: 1.5px;
 }
+
+.area.ie {
+	fill: #1f77b4;
+}
+.area.ch {
+	fill: #dbdb8d;
+}
+.area.fx {
+	fill: #ff7f0e;
+}
+.area.sf {
+	fill: #c7c7c7;
+}
+.area.op {
+	fill: #d62728;
+}
